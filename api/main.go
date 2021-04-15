@@ -1,6 +1,7 @@
 package main
 
 import (
+	"api/src/config"
 	"api/src/router"
 	"fmt"
 	"log"
@@ -8,6 +9,8 @@ import (
 )
 
 func main() {
+
+	config.LoadEnvs()
 
 	fmt.Println("Running the API!")
 	r := router.Generate()
