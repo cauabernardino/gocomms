@@ -2,7 +2,7 @@
 
 ON DEVELOPMENT.
 
-A resemblance to a textual social network, made in Go. 
+An application that resembles a textual social network, made in Go. 
 
 Project being developed with intent to learn more about the Go language and web applications.
 
