@@ -1,10 +1,35 @@
 package controllers
 
-import "net/http"
+import (
+	"api/src/db"
+	"api/src/models"
+	"api/src/repositories"
+	"encoding/json"
+	"io/ioutil"
+	"log"
+	"net/http"
+)
 
 // CreateUser handles the creation of new user in the platform.
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Creating user!"))
+	reqBody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var user models.User
+	if err = json.Unmarshal(reqBody, &user); err != nil {
+		log.Fatal(err)
+	}
+
+	db, err := db.Connect()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	repository := repositories.NewUsersRepository(db)
+	repository.Create(user)
+
 }
 
 // SearchUsers handles the searching for all users of the platform.
