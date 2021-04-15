@@ -15,5 +15,5 @@ func main() {
 	fmt.Println("Running the API!")
 	r := router.Generate()
 
-	log.Fatal(http.ListenAndServe(":5000", r))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", config.Port), r))
 }
