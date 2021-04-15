@@ -5,6 +5,7 @@ import (
 	"api/src/models"
 	"api/src/repositories"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -26,10 +27,14 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer db.Close()
 
-	repository := repositories.NewUsersRepository(db)
-	repository.Create(user)
-
+	usersRepository := repositories.NewUsersRepository(db)
+	userID, err := usersRepository.Create(user)
+	if err != nil {
+		log.Fatal(err)
+	}
+	w.Write([]byte(fmt.Sprintf("A new user was created with ID %d.", userID)))
 }
 
 // SearchUsers handles the searching for all users of the platform.

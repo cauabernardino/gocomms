@@ -16,7 +16,24 @@ func NewUsersRepository(db *sql.DB) *Users {
 }
 
 // Create inserts an user to the database
-func (u Users) Create(user models.User) (uint64, error) {
+func (repository Users) Create(user models.User) (uint64, error) {
+	dbStatement, err := repository.db.Prepare(
+		"INSERT INTO users (name, username, email, password) VALUES (?, ?, ?, ?)",
+	)
+	if err != nil {
+		return 0, nil
+	}
+	defer dbStatement.Close()
 
-	return 0, nil
+	dbExecution, err := dbStatement.Exec(user.Name, user.Username, user.Email, user.Password)
+	if err != nil {
+		return 0, nil
+	}
+
+	lastInsertedID, err := dbExecution.LastInsertId()
+	if err != nil {
+		return 0, nil
+	}
+
+	return uint64(lastInsertedID), nil
 }
