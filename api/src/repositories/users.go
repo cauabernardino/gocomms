@@ -43,20 +43,20 @@ func (repository Users) Create(user models.User) (uint64, error) {
 func (repository Users) Search(nameOrUsername string) ([]models.User, error) {
 	nameOrUsername = fmt.Sprintf("%%%s%%", nameOrUsername) // returns %nameOrUsername%
 
-	lines, err := repository.db.Query(
+	rows, err := repository.db.Query(
 		"SELECT id, name, username, email, created_on FROM users WHERE name LIKE ? OR username LIKE ?",
 		nameOrUsername, nameOrUsername,
 	)
 	if err != nil {
 		return nil, err
 	}
-	defer lines.Close()
+	defer rows.Close()
 
 	var users []models.User
-	for lines.Next() {
+	for rows.Next() {
 		var user models.User
 
-		if err = lines.Scan(
+		if err = rows.Scan(
 			&user.ID,
 			&user.Name,
 			&user.Username,
@@ -70,4 +70,31 @@ func (repository Users) Search(nameOrUsername string) ([]models.User, error) {
 	}
 
 	return users, nil
+}
+
+// SearchID returns the user information of a given ID if it exists
+func (repository Users) SearchID(ID uint64) (models.User, error) {
+	row, err := repository.db.Query(
+		"SELECT id, name, username, email, created_on FROM users WHERE id = ?",
+		ID,
+	)
+	if err != nil {
+		return models.User{}, err
+	}
+	defer row.Close()
+
+	var user models.User
+	for row.Next() {
+		if err = row.Scan(
+			&user.ID,
+			&user.Name,
+			&user.Username,
+			&user.Email,
+			&user.CreatedOn,
+		); err != nil {
+			return models.User{}, err
+		}
+	}
+
+	return user, nil
 }

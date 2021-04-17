@@ -8,7 +8,10 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"strings"
+
+	"github.com/gorilla/mux"
 )
 
 // CreateUser handles the creation of new user in the platform.
@@ -70,7 +73,29 @@ func SearchUsers(w http.ResponseWriter, r *http.Request) {
 
 // SearchUser handles the searching for a specific user.
 func SearchUser(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Searching for a specific user!"))
+	params := mux.Vars(r)
+
+	userID, err := strconv.ParseUint(params["userID"], 10, 64)
+	if err != nil {
+		responses.ReturnError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	db, err := db.Connect()
+	if err != nil {
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
+	}
+	defer db.Close()
+
+	userRepository := repositories.NewUsersRepository(db)
+	user, err := userRepository.SearchID(userID)
+	if err != nil {
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	responses.ReturnJSON(w, http.StatusOK, user)
 }
 
 // UpdateUser handles the edition and/or updating of an user.
