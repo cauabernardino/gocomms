@@ -4,10 +4,9 @@ import (
 	"api/src/db"
 	"api/src/models"
 	"api/src/repositories"
+	"api/src/responses"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -15,26 +14,31 @@ import (
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Fatal(err)
+		responses.ReturnError(w, http.StatusUnprocessableEntity, err)
+		return
 	}
 
 	var user models.User
 	if err = json.Unmarshal(reqBody, &user); err != nil {
-		log.Fatal(err)
+		responses.ReturnError(w, http.StatusBadRequest, err)
+		return
 	}
 
 	db, err := db.Connect()
 	if err != nil {
-		log.Fatal(err)
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
 	}
 	defer db.Close()
 
 	usersRepository := repositories.NewUsersRepository(db)
-	userID, err := usersRepository.Create(user)
+	user.ID, err = usersRepository.Create(user)
 	if err != nil {
-		log.Fatal(err)
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
 	}
-	w.Write([]byte(fmt.Sprintf("A new user was created with ID %d.", userID)))
+
+	responses.ReturnJSON(w, http.StatusCreated, user)
 }
 
 // SearchUsers handles the searching for all users of the platform.
