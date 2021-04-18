@@ -98,3 +98,20 @@ func (repository Users) SearchID(ID uint64) (models.User, error) {
 
 	return user, nil
 }
+
+// Update handles the update of user information in database
+func (repository Users) Update(ID uint64, user models.User) error {
+	dbStatement, err := repository.db.Prepare(
+		"UPDATE users SET name = ?, username = ?, email = ? WHERE id = ?",
+	)
+	if err != nil {
+		return err
+	}
+	defer dbStatement.Close()
+
+	if _, err = dbStatement.Exec(user.Name, user.Username, user.Email, ID); err != nil {
+		return err
+	}
+
+	return nil
+}
