@@ -1,6 +1,7 @@
 package models
 
 import (
+	"api/src/utils"
 	"errors"
 	"strings"
 	"time"
@@ -25,7 +26,9 @@ func (user *User) Prepare(step string) error {
 		return err
 	}
 
-	user.format()
+	if err := user.format(step); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -56,8 +59,19 @@ func (user *User) validate(step string) error {
 }
 
 // formar formats the values for the User struct
-func (user *User) format() {
+func (user *User) format(step string) error {
 	user.Name = strings.TrimSpace(user.Name)
 	user.Username = strings.TrimSpace(user.Username)
 	user.Email = strings.TrimSpace(user.Email)
+
+	if step == "SignUp" {
+		hashedPassword, err := utils.GenerateHash(user.Password)
+		if err != nil {
+			return err
+		}
+
+		user.Password = string(hashedPassword)
+	}
+
+	return nil
 }
