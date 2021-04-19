@@ -72,7 +72,7 @@ func (repository Users) Search(nameOrUsername string) ([]models.User, error) {
 	return users, nil
 }
 
-// SearchID returns the user information of a given ID if it exists
+// SearchID returns the user information of a given ID if it exists in database
 func (repository Users) SearchID(ID uint64) (models.User, error) {
 	row, err := repository.db.Query(
 		"SELECT id, name, username, email, created_on FROM users WHERE id = ?",
@@ -110,6 +110,23 @@ func (repository Users) Update(ID uint64, user models.User) error {
 	defer dbStatement.Close()
 
 	if _, err = dbStatement.Exec(user.Name, user.Username, user.Email, ID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Delete handles the deletion of an user from the database
+func (repository Users) Delete(ID uint64) error {
+	dbStatement, err := repository.db.Prepare(
+		"DELETE FROM users WHERE id = ?",
+	)
+	if err != nil {
+		return err
+	}
+	defer dbStatement.Close()
+
+	if _, err = dbStatement.Exec(ID); err != nil {
 		return err
 	}
 
