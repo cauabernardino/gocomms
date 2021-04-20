@@ -7,6 +7,7 @@ import (
 	"api/src/responses"
 	"api/src/utils"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -41,5 +42,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		responses.ReturnError(w, http.StatusUnauthorized, err)
 		return
 	}
-	w.Write([]byte("You are logged in!"))
+
+	token, _ := utils.CreateToken(registeredUser.ID)
+	fmt.Println(token)
+	w.Write([]byte(token))
 }
