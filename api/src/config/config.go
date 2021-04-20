@@ -15,6 +15,9 @@ var (
 
 	// Port where the API will run
 	Port = 0
+
+	// SECRET_KEY is the key used to sign the JWT token
+	SECRET_KEY []byte
 )
 
 // LoadEnvs will initialize the environment variables for the application
@@ -43,4 +46,6 @@ func LoadEnvs() {
 		DB_PASSWORD,
 		DB_NAME,
 	)
+
+	SECRET_KEY = []byte(os.Getenv("SECRET_KEY"))
 }
