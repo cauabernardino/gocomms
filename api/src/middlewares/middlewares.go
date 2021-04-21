@@ -12,6 +12,7 @@ func Authenticate(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := utils.ValidateToken(r); err != nil {
 			responses.ReturnError(w, http.StatusUnauthorized, err)
+			return
 		}
 		next(w, r)
 	}
