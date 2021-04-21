@@ -5,7 +5,9 @@ import (
 	"api/src/models"
 	"api/src/repositories"
 	"api/src/responses"
+	"api/src/utils"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -104,6 +106,19 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.ParseUint(params["userID"], 10, 64)
 	if err != nil {
 		responses.ReturnError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	tokenUserID, err := utils.ExtractUserID(r)
+	if err != nil {
+		responses.ReturnError(w, http.StatusUnauthorized, err)
+		return
+	}
+
+	// Check for permission
+	if userID != tokenUserID {
+		err := errors.New("you're not allowed to perform this action")
+		responses.ReturnError(w, http.StatusForbidden, err)
 		return
 	}
 
