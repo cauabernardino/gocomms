@@ -1,7 +1,8 @@
 package middlewares
 
 import (
-	"fmt"
+	"api/src/responses"
+	"api/src/utils"
 	"log"
 	"net/http"
 )
@@ -9,7 +10,9 @@ import (
 // Authenticate verifies if the user making the request is authenticated
 func Authenticate(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("Authenticating...")
+		if err := utils.ValidateToken(r); err != nil {
+			responses.ReturnError(w, http.StatusUnauthorized, err)
+		}
 		next(w, r)
 	}
 }
