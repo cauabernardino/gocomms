@@ -322,3 +322,72 @@ func SearchFollowing(w http.ResponseWriter, r *http.Request) {
 
 	responses.ReturnJSON(w, http.StatusOK, following)
 }
+
+// ResetPassword handles the password reset of an user
+func ResetPassword(w http.ResponseWriter, r *http.Request) {
+	tokenUserID, err := utils.ExtractUserID(r)
+	if err != nil {
+		responses.ReturnError(w, http.StatusUnauthorized, err)
+		return
+	}
+
+	params := mux.Vars(r)
+	userID, err := strconv.ParseUint(params["userID"], 10, 64)
+	if err != nil {
+		responses.ReturnError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	// Check for permission
+	if tokenUserID != userID {
+		err := errors.New("you're not allowed to perform this action")
+		responses.ReturnError(w, http.StatusForbidden, err)
+		return
+	}
+
+	reqBody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		responses.ReturnError(w, http.StatusUnprocessableEntity, err)
+		return
+	}
+
+	var password models.Password
+	if err = json.Unmarshal(reqBody, &password); err != nil {
+		responses.ReturnError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	db, err := db.Connect()
+	if err != nil {
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
+	}
+	defer db.Close()
+
+	userRepository := repositories.NewUsersRepository(db)
+	passwordInDB, err := userRepository.SearchPassword(userID)
+	if err != nil {
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	// Verifying current password
+	if err = utils.VerifyPassword(passwordInDB, password.Current); err != nil {
+		err = errors.New("wrong password")
+		responses.ReturnError(w, http.StatusUnauthorized, err)
+	}
+
+	// Hashing and saving new password
+	hashedPassword, err := utils.GenerateHash(password.New)
+	if err != nil {
+		responses.ReturnError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	if err = userRepository.UpdatePassword(userID, string(hashedPassword)); err != nil {
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	responses.ReturnJSON(w, http.StatusNoContent, nil)
+}

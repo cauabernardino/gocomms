@@ -250,3 +250,41 @@ func (repository Users) Following(userID uint64) ([]models.User, error) {
 	return users, nil
 
 }
+
+// SearchPassword returns the password of an user by userID
+func (repository Users) SearchPassword(userID uint64) (string, error) {
+	row, err := repository.db.Query(
+		"SELECT password FROM users WHERE id = ?",
+		userID,
+	)
+	if err != nil {
+		return "", err
+	}
+	defer row.Close()
+
+	var user models.User
+	if row.Next() {
+		if err = row.Scan(&user.Password); err != nil {
+			return "", err
+		}
+	}
+
+	return user.Password, nil
+}
+
+// UpdatePassword updates the password of an user in database
+func (repository Users) UpdatePassword(userID uint64, hashedPassword string) error {
+	dbStatement, err := repository.db.Prepare(
+		"UPDATE users SET password = ? WHERE id = ?",
+	)
+	if err != nil {
+		return err
+	}
+	defer dbStatement.Close()
+
+	if _, err = dbStatement.Exec(hashedPassword, userID); err != nil {
+		return err
+	}
+
+	return nil
+}
