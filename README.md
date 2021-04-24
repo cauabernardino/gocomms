@@ -25,7 +25,9 @@ The list of external packages used are:
 
 - Database
 
-The API is configured to use MySQL database listening in the default port 3306. You can installed it directly accessing [here](https://dev.mysql.com/downloads/mysql/), or use it from a Docker image if you prefer, looking [here](https://hub.docker.com/_/mysql).
+The API is configured to use MySQL database listening in the default port 3306. You can install it directly accessing [here](https://dev.mysql.com/downloads/mysql/), or use it from a Docker image if you prefer, looking [here](https://hub.docker.com/_/mysql).
+
+The query for creating the database can be found in [database](/api/database).
 
 - API
 
