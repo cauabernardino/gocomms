@@ -176,3 +176,20 @@ func (repository Posts) SearchByUser(userID uint64) ([]models.Post, error) {
 
 	return posts, nil
 }
+
+// Like adds one like for the post in database
+func (repository Posts) Like(postID uint64) error {
+	dbStatement, err := repository.db.Prepare(
+		"UPDATE posts SET likes = likes + 1 WHERE id = ?",
+	)
+	if err != nil {
+		return err
+	}
+	defer dbStatement.Close()
+
+	if _, err = dbStatement.Exec(postID); err != nil {
+		return err
+	}
+
+	return nil
+}

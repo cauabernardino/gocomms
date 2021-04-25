@@ -239,3 +239,27 @@ func SearchPostsByUser(w http.ResponseWriter, r *http.Request) {
 
 	responses.ReturnJSON(w, http.StatusOK, posts)
 }
+
+// LikePost handles the action of liking a post
+func LikePost(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	postID, err := strconv.ParseUint(params["postID"], 10, 64)
+	if err != nil {
+		responses.ReturnError(w, http.StatusBadRequest, err)
+	}
+
+	db, err := db.Connect()
+	if err != nil {
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
+	}
+	defer db.Close()
+
+	postRepository := repositories.NewPostsRepository(db)
+	if err = postRepository.Like(postID); err != nil {
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	responses.ReturnJSON(w, http.StatusNoContent, nil)
+}
