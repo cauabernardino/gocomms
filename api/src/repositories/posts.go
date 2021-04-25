@@ -108,3 +108,20 @@ func (repository Posts) Search(userID uint64) ([]models.Post, error) {
 
 	return posts, nil
 }
+
+// Update inserts the post changes made by the owner user into database
+func (repository Posts) Update(postID uint64, post models.Post) error {
+	dbStatement, err := repository.db.Prepare(
+		"UPDATE posts SET title = ?, content = ? WHERE id = ?",
+	)
+	if err != nil {
+		return err
+	}
+	defer dbStatement.Close()
+
+	if _, err = dbStatement.Exec(post.Title, post.Content, postID); err != nil {
+		return err
+	}
+
+	return nil
+}
