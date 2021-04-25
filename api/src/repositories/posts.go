@@ -193,3 +193,23 @@ func (repository Posts) Like(postID uint64) error {
 
 	return nil
 }
+
+// Unlike subtracts one like from the post in database if it has at least one
+func (repository Posts) Unlike(postID uint64) error {
+	dbStatement, err := repository.db.Prepare(
+		`UPDATE posts SET likes = 
+		CASE WHEN likes > 0 THEN likes - 1
+		ELSE likes END	
+		WHERE id = ?`,
+	)
+	if err != nil {
+		return err
+	}
+	defer dbStatement.Close()
+
+	if _, err = dbStatement.Exec(postID); err != nil {
+		return err
+	}
+
+	return nil
+}
