@@ -59,7 +59,29 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 }
 
 // SearchPosts handles the searching for all posts
-func SearchPosts(w http.ResponseWriter, r *http.Request) {}
+func SearchPosts(w http.ResponseWriter, r *http.Request) {
+	userID, err := utils.ExtractUserID(r)
+	if err != nil {
+		responses.ReturnError(w, http.StatusUnauthorized, err)
+		return
+	}
+
+	db, err := db.Connect()
+	if err != nil {
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
+	}
+	defer db.Close()
+
+	postRepository := repositories.NewPostsRepository(db)
+	posts, err := postRepository.Search(userID)
+	if err != nil {
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	responses.ReturnJSON(w, http.StatusOK, posts)
+}
 
 // SearchPost handles the searching for a specific post
 func SearchPost(w http.ResponseWriter, r *http.Request) {
