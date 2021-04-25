@@ -20,7 +20,7 @@ var postRoutes = []Route{
 	},
 	{
 		URI:          "/posts/{postID}",
-		Method:       http.MethodPost,
+		Method:       http.MethodGet,
 		Function:     controllers.SearchPost,
 		AuthRequired: true,
 	},

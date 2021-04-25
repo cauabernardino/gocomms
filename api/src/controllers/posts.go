@@ -9,6 +9,9 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 // CreatePost handles the creation of a new post in the platform
@@ -59,7 +62,30 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 func SearchPosts(w http.ResponseWriter, r *http.Request) {}
 
 // SearchPost handles the searching for a specific post
-func SearchPost(w http.ResponseWriter, r *http.Request) {}
+func SearchPost(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	postID, err := strconv.ParseUint(params["postID"], 10, 64)
+	if err != nil {
+		responses.ReturnError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	db, err := db.Connect()
+	if err != nil {
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
+	}
+	defer db.Close()
+
+	postRepository := repositories.NewPostsRepository(db)
+	post, err := postRepository.SearchID(postID)
+	if err != nil {
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	responses.ReturnJSON(w, http.StatusOK, post)
+}
 
 // UpdatePost handles the edition/updating of a post
 func UpdatePost(w http.ResponseWriter, r *http.Request) {}
