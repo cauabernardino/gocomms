@@ -172,4 +172,45 @@ func UpdatePost(w http.ResponseWriter, r *http.Request) {
 }
 
 // DeletePost handles the deletion of a post
-func DeletePost(w http.ResponseWriter, r *http.Request) {}
+func DeletePost(w http.ResponseWriter, r *http.Request) {
+	userID, err := utils.ExtractUserID(r)
+	if err != nil {
+		responses.ReturnError(w, http.StatusUnauthorized, err)
+		return
+	}
+
+	params := mux.Vars(r)
+	postID, err := strconv.ParseUint(params["postID"], 10, 64)
+	if err != nil {
+		responses.ReturnError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	db, err := db.Connect()
+	if err != nil {
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
+	}
+	defer db.Close()
+
+	postRepository := repositories.NewPostsRepository(db)
+	postInDatabase, err := postRepository.SearchID(postID)
+	if err != nil {
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	// Checking for authorization
+	if postInDatabase.AuthorID != userID {
+		err = errors.New("you're not allowed to perform this action")
+		responses.ReturnError(w, http.StatusForbidden, err)
+		return
+	}
+
+	if err = postRepository.Delete(postID); err != nil {
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	responses.ReturnJSON(w, http.StatusNoContent, nil)
+}

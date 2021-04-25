@@ -125,3 +125,20 @@ func (repository Posts) Update(postID uint64, post models.Post) error {
 
 	return nil
 }
+
+// Delete handles the deletion of an user from the database
+func (repository Posts) Delete(postID uint64) error {
+	dbStatement, err := repository.db.Prepare(
+		"DELETE FROM posts WHERE id = ?",
+	)
+	if err != nil {
+		return err
+	}
+	defer dbStatement.Close()
+
+	if _, err = dbStatement.Exec(postID); err != nil {
+		return err
+	}
+
+	return nil
+}
