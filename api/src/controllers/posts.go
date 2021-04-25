@@ -214,3 +214,28 @@ func DeletePost(w http.ResponseWriter, r *http.Request) {
 
 	responses.ReturnJSON(w, http.StatusNoContent, nil)
 }
+
+// SearchPostsByUser handles the searching for all posts from a specific user
+func SearchPostsByUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	userID, err := strconv.ParseUint(params["userID"], 10, 64)
+	if err != nil {
+		responses.ReturnError(w, http.StatusBadRequest, err)
+	}
+
+	db, err := db.Connect()
+	if err != nil {
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
+	}
+	defer db.Close()
+
+	postsRepository := repositories.NewPostsRepository(db)
+	posts, err := postsRepository.SearchByUser(userID)
+	if err != nil {
+		responses.ReturnError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	responses.ReturnJSON(w, http.StatusOK, posts)
+}

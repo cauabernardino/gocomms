@@ -29,7 +29,7 @@ CREATE TABLE followers (
 ) ENGINE=INNODB;
 
 
-CREATE TABLE posts(
+CREATE TABLE posts (
     id int auto_increment primary key,
     title varchar(100) not null,
     content varchar(360) not null,

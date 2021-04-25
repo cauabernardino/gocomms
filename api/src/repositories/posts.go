@@ -142,3 +142,37 @@ func (repository Posts) Delete(postID uint64) error {
 
 	return nil
 }
+
+// SearchByUser brings all the posts by a specific user
+func (repository Posts) SearchByUser(userID uint64) ([]models.Post, error) {
+	rows, err := repository.db.Query(
+		`SELECT p.*, u.username FROM posts p
+		JOIN users u on u.id = p.author_id
+		WHERE p.author_id = ?`,
+		userID,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var posts []models.Post
+	for rows.Next() {
+		var post models.Post
+
+		if err = rows.Scan(
+			&post.ID,
+			&post.Title,
+			&post.Content,
+			&post.AuthorID,
+			&post.Likes,
+			&post.CreatedOn,
+			&post.AuthorUsername,
+		); err != nil {
+			return nil, err
+		}
+		posts = append(posts, post)
+	}
+
+	return posts, nil
+}
