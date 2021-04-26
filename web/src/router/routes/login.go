@@ -2,20 +2,20 @@ package routes
 
 import (
 	"net/http"
-	"web/src/controllers"
+	"web/src/views"
 )
 
 var loginRoutes = []Route{
 	{
 		URI:          "/",
 		Method:       http.MethodGet,
-		Function:     controllers.LoginPage,
+		Function:     views.LoginPage,
 		AuthRequired: false,
 	},
 	{
 		URI:          "/login",
 		Method:       http.MethodGet,
-		Function:     controllers.LoginPage,
+		Function:     views.LoginPage,
 		AuthRequired: false,
 	},
 }
