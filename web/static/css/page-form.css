@@ -4,10 +4,6 @@
     box-sizing: border-box;
 }
 
-body {
-    background-color: var(--color-background);
-}
-
 span.block-title-login {
     font-size: 38px;
     color: var(--color-text-highlight-light);
@@ -64,7 +60,7 @@ input::placeholder {
     padding: 50px 0 90px 0;
 }
 
-.form-login > div {
+.form-std > div {
     width: 100%;
     position: relative;
     border: 2px solid transparent;
@@ -72,7 +68,7 @@ input::placeholder {
     margin-bottom: 15px;
 }
 
-.btn-login {
+.btn-std {
     font-size: 20px;
     line-height: 1.2;
     padding: 0 10px;
@@ -86,7 +82,7 @@ input::placeholder {
     margin-top: 10px;
 }
 
-.btn-login:hover {
+.btn-std:hover {
     cursor: pointer;
     color: var(--color-text-primary);
 }

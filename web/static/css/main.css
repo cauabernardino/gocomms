@@ -10,3 +10,7 @@
     font-family: 'Fira Sans', sans-serif;
 }
 
+
+body {
+    background-color: var(--color-background);
+}
