@@ -22,18 +22,18 @@ func (repository Users) Create(user models.User) (uint64, error) {
 		"INSERT INTO users (name, username, email, password) VALUES (?, ?, ?, ?)",
 	)
 	if err != nil {
-		return 0, nil
+		return 0, err
 	}
 	defer dbStatement.Close()
 
 	dbExecution, err := dbStatement.Exec(user.Name, user.Username, user.Email, user.Password)
 	if err != nil {
-		return 0, nil
+		return 0, err
 	}
 
 	lastInsertedID, err := dbExecution.LastInsertId()
 	if err != nil {
-		return 0, nil
+		return 0, err
 	}
 
 	return uint64(lastInsertedID), nil
