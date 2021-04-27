@@ -2,8 +2,6 @@ $('#signup-form').on('submit', createAccount);
 
 function createAccount(event) {
     event.preventDefault();
-    console.log("Testing, testing!")
-
 
     if ($('#password').val() != $('#confirm-password').val()) {
         alert("The passwords doesn't match!");
@@ -19,5 +17,10 @@ function createAccount(event) {
             username: $('#username').val(),
             password: $('#password').val(),
         }
-    })
+    }).done(function () {
+        alert("User has signed up!");
+    }).fail(function (error) {
+        console.log(error)
+        alert("Error in signing up!");
+    });
 }
