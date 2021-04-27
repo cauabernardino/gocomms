@@ -1,0 +1,92 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--color-background);
+}
+
+span.block-title-login {
+    font-size: 38px;
+    color: var(--color-text-highlight-light);
+    line-height: 1.2;
+    text-align: center;
+    display: block;
+    padding-bottom: 30px;
+}
+
+a {
+    font-size: 14px;
+    color: var(--color-text-highlight-dark);
+    line-height: 1.4;
+    text-align: center;
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--color-text-highlight-lighter);
+}
+
+input {
+    outline: none;
+    border: none;
+    color: var(--color-text-primary);
+    line-height: 1.2;
+    font-size: 18px;
+    display: block;
+    width: 100%;
+    background-color: var(--color-background-light);
+    height: 62px;
+    border-radius: 10px;
+    padding: 0 20px 0 38px;
+}
+
+input::placeholder {
+    color: var(--color-text-secondary);
+}
+
+.container-login {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+.container-login > div {
+    width: 390px;
+    border-radius: 10px;
+    position: relative;
+    padding: 50px 0 90px 0;
+}
+
+.form-login > div {
+    width: 100%;
+    position: relative;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.btn-login {
+    font-size: 20px;
+    line-height: 1.2;
+    padding: 0 10px;
+    width: 100%;
+    height: 62px;
+    outline: none;
+    border: none;
+    color: var(--color-text-secondary);
+    background-color: var(--color-background-light);
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.btn-login:hover {
+    cursor: pointer;
+    color: var(--color-text-primary);
+}

@@ -21,5 +21,9 @@ func Configure(router *mux.Router) *mux.Router {
 		router.HandleFunc(route.URI, route.Function).Methods(route.Method)
 	}
 
+	// Configuration to handle static files
+	fileServer := http.FileServer(http.Dir("./static/"))
+	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fileServer))
+
 	return router
 }

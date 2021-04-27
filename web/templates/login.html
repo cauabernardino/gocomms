@@ -4,11 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoComms</title>
+    <title>GoComms - Login</title>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/page-login.css">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <h2>Login page!</h2>
+    <div class="container-login">
+        <div>
+            <form id="login" class="form-login">
+                <span class="block-title-login">GoComms</span>
+                <div>
+                    <input type="text" name="email" id="email" placeholder="Insert your email" required="required">
+                </div>
+                <div>
+                    <input type="password" name="password" id="password" placeholder="Insert your password"
+                        required="required">
+                </div>
+                <a href="#">Click here to sign up!</a>
+                <button type="submit" class="btn-login">Login</button>
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>
