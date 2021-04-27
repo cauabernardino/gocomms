@@ -6,5 +6,5 @@ import (
 
 // LoginPage handles the loading of login page
 func LoginPage(w http.ResponseWriter, r *http.Request) {
-	ExecuteTemplate(w, "login.html", nil)
+	RenderTemplate(w, "login.html", nil)
 }
