@@ -2,6 +2,7 @@ package routes
 
 import (
 	"net/http"
+	"web/src/middlewares"
 
 	"github.com/gorilla/mux"
 )
@@ -20,7 +21,23 @@ func Configure(router *mux.Router) *mux.Router {
 	routes = append(routes, userRoutes...)
 
 	for _, route := range routes {
-		router.HandleFunc(route.URI, route.Function).Methods(route.Method)
+
+		if route.AuthRequired {
+			router.HandleFunc(
+				route.URI,
+				middlewares.Logger(
+					middlewares.AuthenticateSession(route.Function),
+				),
+			).Methods(route.Method)
+		} else {
+			router.HandleFunc(
+				route.URI,
+				middlewares.Logger(
+					route.Function,
+				),
+			).Methods(route.Method)
+		}
+
 	}
 
 	// Configuration to handle static files
