@@ -8,6 +8,7 @@ import (
 	"web/src/config"
 	"web/src/models"
 	"web/src/responses"
+	"web/src/utils"
 )
 
 // UserLogin uses email and password from the user to perform login
@@ -50,6 +51,15 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 
 	var authData models.AuthData
 	if err = json.NewDecoder(response.Body).Decode(&authData); err != nil {
+		responses.ReturnJSON(
+			w,
+			http.StatusUnprocessableEntity,
+			responses.APIError{Error: err.Error()},
+		)
+		return
+	}
+
+	if err = utils.SaveCookie(w, authData.ID, authData.Token); err != nil {
 		responses.ReturnJSON(
 			w,
 			http.StatusUnprocessableEntity,

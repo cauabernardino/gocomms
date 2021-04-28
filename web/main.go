@@ -6,13 +6,15 @@ import (
 	"net/http"
 	"web/src/config"
 	"web/src/router"
+	"web/src/utils"
 	"web/src/views"
 )
 
 func main() {
 
-	views.LoadTemplates()
 	config.LoadEnvs()
+	utils.ConfigureCookies()
+	views.LoadTemplates()
 
 	r := router.Generate()
 
