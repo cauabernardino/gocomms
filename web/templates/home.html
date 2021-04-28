@@ -5,10 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GoComms - Home</title>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/page-form.css">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <h2>This is the GoComms homepage!</h2>
+
+    {{ range . }}
+
+    <h3>{{.Title}} - {{.AuthorUsername}}</h3>
+    <h4>{{.Content}}</h4>
+    <br />
+
+    {{ end }}
+
+    <script src="/static/js/jquery.min.js"></script>
 </body>
 
 </html>

@@ -4,9 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"web/src/config"
+	"web/src/models"
 	"web/src/responses"
+	"web/src/utils"
 )
 
 // CreateUser handles the call to API for registering an user in database
@@ -52,4 +55,35 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responses.ReturnJSON(w, response.StatusCode, nil)
+}
+
+// UserAuthenticatedRequest handles the token insertion into request
+func UserAuthenticatedRequest(r *http.Request, method, url string, data io.Reader) (*http.Response, error) {
+	// Creates the request
+	request, err := http.NewRequest(method, url, data)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get cookie from browser and add it to request header
+	cookie, _ := utils.CheckCookie(r)
+	request.Header.Add("Authorization", "Bearer "+cookie["token"])
+
+	// Execution of request and catching response
+	client := &http.Client{}
+	response, err := client.Do(request)
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+// GetPosts decodes the and returns the posts in JSON format
+func GetPosts(w http.ResponseWriter, response *http.Response) ([]models.Post, error) {
+	var posts []models.Post
+	if err := json.NewDecoder(response.Body).Decode(&posts); err != nil {
+		return nil, err
+	}
+	return posts, nil
 }
