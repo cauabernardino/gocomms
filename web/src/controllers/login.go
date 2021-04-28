@@ -3,7 +3,9 @@ package controllers
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"web/src/config"
 	"web/src/models"
 	"web/src/responses"
 )
@@ -25,8 +27,9 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	url := fmt.Sprintf("%s/login", config.APIURL)
 	response, err := http.Post(
-		"http://localhost:5000/login",
+		url,
 		"application/json",
 		bytes.NewBuffer(user),
 	)
@@ -38,7 +41,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
-	response.Body.Close()
+	defer response.Body.Close()
 
 	if response.StatusCode >= 400 {
 		responses.HandleStatusCodeError(w, response)
