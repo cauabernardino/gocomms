@@ -21,7 +21,7 @@ func ReturnJSON(w http.ResponseWriter, statusCode int, data interface{}) {
 	}
 }
 
-// HandleStatusCodeError returns the API error message in a JSON format
+// HandleStatusCodeError returns the API status code error message in a JSON format
 func HandleStatusCodeError(w http.ResponseWriter, r *http.Response) {
 	var err APIError
 
