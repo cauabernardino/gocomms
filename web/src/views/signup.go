@@ -2,6 +2,7 @@ package views
 
 import "net/http"
 
-func LoadSignUpPage(w http.ResponseWriter, r *http.Request) {
+// SignUpPage handles the loading of sign up page
+func SignUpPage(w http.ResponseWriter, r *http.Request) {
 	RenderTemplate(w, "signup.html", nil)
 }

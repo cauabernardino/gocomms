@@ -10,7 +10,7 @@ var userRoutes = []Route{
 	{
 		URI:          "/signup",
 		Method:       http.MethodGet,
-		Function:     views.LoadSignUpPage,
+		Function:     views.SignUpPage,
 		AuthRequired: false,
 	},
 	{
