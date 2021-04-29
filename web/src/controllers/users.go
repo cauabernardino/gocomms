@@ -7,7 +7,6 @@ import (
 	"io"
 	"net/http"
 	"web/src/config"
-	"web/src/models"
 	"web/src/responses"
 	"web/src/utils"
 )
@@ -77,13 +76,4 @@ func UserAuthenticatedRequest(r *http.Request, method, url string, data io.Reade
 	}
 
 	return response, nil
-}
-
-// GetPosts decodes the and returns the posts in JSON format
-func GetPosts(w http.ResponseWriter, response *http.Response) ([]models.Post, error) {
-	var posts []models.Post
-	if err := json.NewDecoder(response.Body).Decode(&posts); err != nil {
-		return nil, err
-	}
-	return posts, nil
 }
