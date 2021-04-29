@@ -1,5 +1,6 @@
 * { 
     --color-background: #1a1a1d;
+    --color-background-dark: #101017;
     --color-background-light: #4e4e50;
     --color-text-primary: #E9e9df;
     --color-text-secondary: #8f8fa1;
@@ -13,4 +14,62 @@
 
 body {
     background-color: var(--color-background);
+}
+
+header {
+    background-color: var(--color-background-dark);
+    
+}
+header a {
+    color: var(--color-text-highlight-light)!important;
+}
+/* Some Bootstrap overriding -> Must be specific */
+div h3.title-hg-light {
+    color: var(--color-text-highlight-light);
+}
+
+form label.title-hg-dark {
+    color: var(--color-text-highlight-dark);
+}
+
+form input.input-color {
+    color: var(--color-text-primary)!important;
+    background-color: var(--color-background-light)!important;
+    outline: none!important;
+    border: none!important;
+}
+
+form input.input-color:focus {
+    border-color: var(--color-text-highlight-lighter)!important;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(172, 94, 111, 0.25)!important;
+}
+
+form textarea.input-color {
+    color: var(--color-text-primary)!important;
+    background-color: var(--color-background-light)!important;
+    outline: none!important;
+    border: none!important;
+}
+
+form textarea.input-color:focus {
+    border-color: var(--color-text-highlight-lighter)!important;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(172, 94, 111, 0.25)!important;
+}
+
+form button.btn-color {
+    color: var(--color-text-secondary)!important;
+    background-color: var(--color-background-light)!important;
+}
+
+form button.btn-color:hover {
+    cursor: pointer;
+    color: var(--color-text-primary);
+}
+
+form button.btn-color:focus {
+    border-color: var(--color-text-highlight-lighter)!important;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(172, 94, 111, 0.25)!important;
 }

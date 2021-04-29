@@ -39,6 +39,12 @@ input {
     padding: 0 20px 0 38px;
 }
 
+input:focus {
+    border-color: var(--color-text-highlight-lighter);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(172, 94, 111, 0.25);
+}
+
 input::placeholder {
     color: var(--color-text-secondary);
 }
