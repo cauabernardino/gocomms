@@ -20,10 +20,18 @@ header {
     background-color: var(--color-background-dark);
     
 }
-header a {
-    color: var(--color-text-highlight-light)!important;
-}
+
 /* Some Bootstrap overriding -> Must be specific */
+
+header a.logo-color {
+    color: var(--color-text-highlight-light)!important;
+    font-weight: 700!important;
+}
+
+header a.link-color {
+    color:  var(--color-text-highlight-dark)!important;
+}
+
 div h3.title-hg-light {
     color: var(--color-text-highlight-light);
 }
@@ -72,4 +80,13 @@ form button.btn-color:focus {
     border-color: var(--color-text-highlight-lighter)!important;
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(172, 94, 111, 0.25)!important;
+}
+
+div.jumbotron {
+    background-color: var(--color-background-light)!important;
+    color: var(--color-text-primary)!important;
+}
+
+div h1.display-4 {
+    color: var(--color-text-secondary)!important;
 }

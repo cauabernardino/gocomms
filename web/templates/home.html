@@ -13,31 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <header>
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#">GoComms</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
-            aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control input-color mr-sm-2" type="search" placeholder="Search">
-                <button class="btn btn-color my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-    </nav>
+    {{ template "navbar" }}
 </header>
 
 <body>
@@ -82,14 +58,8 @@
         </div>
     </div>
 
-    <footer class="text-muted mt-4">
-        <div class="container-fluid">
-            <p>GoComms 2021. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="/static/js/jquery.min.js"></script>
-    <script src="/static/js/bootstrap.js"></script>
 </body>
+{{ template "footer" }}
+{{ template "scripts" }}
 
 </html>
