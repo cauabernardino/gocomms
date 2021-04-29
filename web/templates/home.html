@@ -41,17 +41,13 @@
             </div>
             <!-- Post feed -->
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
-                {{ range . }}
+                {{ range .Posts }}
 
-                <div class="jumbotron">
-                    <h1 class="display-4">{{.Title}}</h1>
-                    <p class="lead">{{.Content}}</p>
-                    <hr class="my-4">
-                    <p>{{.AuthorUsername}} on {{.CreatedOn}}</p>
-                    <p class="lead">
-                        <a class="btn btn-lg" href="#" role="button">Learn more</a>
-                    </p>
-                </div>
+                {{ if (eq .AuthorID $.UserID) }}
+                {{ template "selfPost" . }}
+                {{ else }}
+                {{ template "othersPost" . }}
+                {{ end }}
 
                 {{ end }}
             </div>

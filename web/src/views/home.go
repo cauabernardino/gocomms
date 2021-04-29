@@ -3,9 +3,12 @@ package views
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 	"web/src/config"
 	"web/src/controllers"
+	"web/src/models"
 	"web/src/responses"
+	"web/src/utils"
 )
 
 // HomePage handles the loading of home page
@@ -37,5 +40,19 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	RenderTemplate(w, "home.html", posts)
+	// Check for loading the custom buttons (edit, delete, etc)
+	cookie, _ := utils.CheckCookie(r)
+	userID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	RenderTemplate(
+		w,
+		"home.html",
+		struct {
+			Posts  []models.Post
+			UserID uint64
+		}{
+			Posts:  posts,
+			UserID: userID,
+		},
+	)
 }

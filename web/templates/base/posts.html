@@ -1,0 +1,41 @@
+<!-- Buttons -->
+{{ define "likes" }}
+<span>{{.Likes}} likes</span>
+{{end}}
+
+{{ define "edit" }}
+<a href="/edit">Edit</a>
+{{ end }}
+
+
+{{ define "delete" }}
+<a href="/delete">Delete</a>
+{{ end }}
+
+
+<!-- Post templates -->
+
+{{ define "postHeader" }}
+<h1 class="display-4">{{.Title}}</h1>
+<p class="lead">{{.Content}}</p>
+<hr class="my-4">
+<p>{{.AuthorUsername}} on {{.CreatedOn.Format "January 2, 2006 at 15h04"}}</p>
+{{ end}}
+
+
+{{ define "selfPost"}}
+<div class="jumbotron" post-id="{{ .AuthorID }}">
+    {{ template "postHeader" .}}
+    {{ template "likes" . }}
+    {{ template "edit" . }}
+    {{ template "delete" . }}
+</div>
+{{ end }}
+
+
+{{ define "othersPost"}}
+<div class="jumbotron" post-id="{{ .AuthorID }}">
+    {{template "postHeader" .}}
+    {{ template "likes" . }}
+</div>
+{{ end }}
