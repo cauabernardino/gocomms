@@ -2,7 +2,7 @@ $('#new-post').on('submit', createPost);
 $(document).on('click', '.like-post', likePost)
 $(document).on('click', '.unlike-post', unlikePost)
 $('#send-edit').on('click', editPost);
-
+$('.delete-post').on('click', deletePost)
 
 function createPost(event) {
     event.preventDefault();
@@ -101,4 +101,25 @@ function editPost(event) {
         $("#send-edit").prop('disabled', false)
     })
 
+}
+
+function deletePost(event) {
+    event.preventDefault();
+
+    const clickedElement = $(event.target);
+    const post = clickedElement.closest('div')
+    const postID = post.data('post-id');
+
+    clickedElement.prop('disabled', true);
+
+    $.ajax({
+        url: `/posts/${postID}`,
+        method: "DELETE"
+    }).done(function () {
+        post.fadeOut("slow", function () {
+            $(this).remove();
+        });
+    }).fail(function () {
+        alert("Error on deleting post!");
+    })
 }

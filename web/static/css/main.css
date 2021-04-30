@@ -111,3 +111,13 @@ div i.like-post:hover {
 .like-color {
     color: var(--color-text-highlight-lighter)!important;
 }
+
+div i.delete-post {
+    color:  var(--color-text-secondary)!important;
+    text-decoration: none;
+}
+
+div i.delete-post:hover {
+    color: var(--color-text-highlight-lighter)!important;
+    cursor: pointer;
+}

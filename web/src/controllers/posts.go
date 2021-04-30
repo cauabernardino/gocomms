@@ -208,3 +208,43 @@ func EditPost(w http.ResponseWriter, r *http.Request) {
 
 	responses.ReturnJSON(w, response.StatusCode, nil)
 }
+
+// DeletePost calls API for deleting a specific post
+func DeletePost(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+
+	postID, err := strconv.ParseUint(params["postID"], 10, 64)
+	if err != nil {
+		responses.ReturnJSON(
+			w,
+			http.StatusBadRequest,
+			responses.APIError{Error: err.Error()},
+		)
+		return
+	}
+
+	url := fmt.Sprintf("%s/posts/%d", config.APIURL, postID)
+	response, err := UserAuthenticatedRequest(
+		r,
+		http.MethodDelete,
+		url,
+		nil,
+	)
+	if err != nil {
+		responses.ReturnJSON(
+			w,
+			http.StatusInternalServerError,
+			responses.APIError{Error: err.Error()},
+		)
+		return
+	}
+	defer response.Body.Close()
+
+	// Check if the status code returned from API is an error
+	if response.StatusCode >= 400 {
+		responses.HandleAPIStatusCodeError(w, response)
+		return
+	}
+
+	responses.ReturnJSON(w, response.StatusCode, nil)
+}

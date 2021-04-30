@@ -5,15 +5,13 @@
 
 {{ define "edit" }}
 <a href="/posts/{{ .ID }}/edit" class="link-color">
-    <i class="far fa-edit"></i> Edit
+    <i class="far fa-edit"></i>
 </a>
 {{ end }}
 
 
 {{ define "delete" }}
-<a href="/delete" class="link-color">
-    <i class="fas fa-trash-alt"></i> Delete
-</a>
+<i class="fas fa-trash-alt delete-post"></i>
 {{ end }}
 
 
