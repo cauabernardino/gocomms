@@ -49,7 +49,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	// Check if the status code returned from API is an error
 	if response.StatusCode >= 400 {
-		responses.HandleStatusCodeError(w, response)
+		responses.HandleAPIStatusCodeError(w, response)
 		return
 	}
 

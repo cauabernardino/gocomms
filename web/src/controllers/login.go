@@ -45,7 +45,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 	defer response.Body.Close()
 
 	if response.StatusCode >= 400 {
-		responses.HandleStatusCodeError(w, response)
+		responses.HandleAPIStatusCodeError(w, response)
 		return
 	}
 

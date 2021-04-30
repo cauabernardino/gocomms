@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 	"web/src/controllers"
+	"web/src/views"
 )
 
 var postRoutes = []Route{
@@ -22,6 +23,18 @@ var postRoutes = []Route{
 		URI:          "/posts/{postID}/unlike",
 		Method:       http.MethodPost,
 		Function:     controllers.UnlikePost,
+		AuthRequired: true,
+	},
+	{
+		URI:          "/posts/{postID}/edit",
+		Method:       http.MethodGet,
+		Function:     views.EditPostPage,
+		AuthRequired: true,
+	},
+	{
+		URI:          "/posts/{postID}",
+		Method:       http.MethodPut,
+		Function:     controllers.EditPost,
 		AuthRequired: true,
 	},
 }

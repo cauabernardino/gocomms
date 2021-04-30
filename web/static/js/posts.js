@@ -1,6 +1,7 @@
 $('#new-post').on('submit', createPost);
 $(document).on('click', '.like-post', likePost)
 $(document).on('click', '.unlike-post', unlikePost)
+$('#send-edit').on('click', editPost);
 
 
 function createPost(event) {
@@ -77,4 +78,27 @@ function unlikePost(event) {
     }).always(function () {
         clickedElement.prop('disabled', false);
     })
+}
+
+function editPost(event) {
+    $(this).prop('disabled', true);
+
+    const postID = $(this).data('post-id')
+
+    $.ajax({
+        url: `/posts/${postID}`,
+        method: "PUT",
+        data: {
+            title: $('#title').val(),
+            content: $('#content').val(),
+        }
+    }).done(function () {
+        alert("Post edited successfully!");
+        window.location = "/home";
+    }).fail(function () {
+        alert("Error on editing post!");
+    }).always(function () {
+        $("#send-edit").prop('disabled', false)
+    })
+
 }
