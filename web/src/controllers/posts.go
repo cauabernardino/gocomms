@@ -104,3 +104,43 @@ func LikePost(w http.ResponseWriter, r *http.Request) {
 
 	responses.ReturnJSON(w, response.StatusCode, nil)
 }
+
+// UnlikePost calls API for unliking a specific post
+func UnlikePost(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+
+	postID, err := strconv.ParseUint(params["postID"], 10, 64)
+	if err != nil {
+		responses.ReturnJSON(
+			w,
+			http.StatusBadRequest,
+			responses.APIError{Error: err.Error()},
+		)
+		return
+	}
+
+	url := fmt.Sprintf("%s/posts/%d/unlike", config.APIURL, postID)
+	response, err := UserAuthenticatedRequest(
+		r,
+		http.MethodPost,
+		url,
+		nil,
+	)
+	if err != nil {
+		responses.ReturnJSON(
+			w,
+			http.StatusInternalServerError,
+			responses.APIError{Error: err.Error()},
+		)
+		return
+	}
+	defer response.Body.Close()
+
+	// Check if the status code returned from API is an error
+	if response.StatusCode >= 400 {
+		responses.HandleStatusCodeError(w, response)
+		return
+	}
+
+	responses.ReturnJSON(w, response.StatusCode, nil)
+}

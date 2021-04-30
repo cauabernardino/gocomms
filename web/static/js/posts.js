@@ -1,5 +1,6 @@
 $('#new-post').on('submit', createPost);
-$('.like-post').on('click', likePost);
+$(document).on('click', '.like-post', likePost)
+$(document).on('click', '.unlike-post', unlikePost)
 
 
 function createPost(event) {
@@ -36,6 +37,41 @@ function likePost(event) {
         const qtyLike = parseInt(countLike.text());
 
         countLike.text(qtyLike + 1);
+
+        // For unliking
+        clickedElement.addClass('unlike-post');
+        clickedElement.addClass('like-color');
+        clickedElement.removeClass('like-post');
+
+    }).fail(function () {
+        alert("Error on liking!")
+    }).always(function () {
+        clickedElement.prop('disabled', false);
+    })
+}
+
+function unlikePost(event) {
+    event.preventDefault();
+
+    const clickedElement = $(event.target);
+    const postID = clickedElement.closest('div').data('post-id');
+
+    clickedElement.prop('disabled', true);
+
+    $.ajax({
+        url: `/posts/${postID}/unlike`,
+        method: "POST"
+    }).done(function () {
+        const countLike = clickedElement.next('span');
+        const qtyLike = parseInt(countLike.text());
+
+        countLike.text(qtyLike - 1);
+
+        // For unlinking
+        clickedElement.removeClass('unlike-post');
+        clickedElement.removeClass('like-color');
+        clickedElement.addClass('like-post');
+
     }).fail(function () {
         alert("Error on liking!")
     }).always(function () {
