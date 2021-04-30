@@ -1,4 +1,5 @@
 $('#new-post').on('submit', createPost);
+$('.like-post').on('click', likePost);
 
 
 function createPost(event) {
@@ -16,5 +17,28 @@ function createPost(event) {
         window.location = "/home";
     }).fail(function () {
         alert("Error on creating the post!");
+    })
+}
+
+function likePost(event) {
+    event.preventDefault();
+
+    const clickedElement = $(event.target);
+    const postID = clickedElement.closest('div').data('post-id');
+
+    clickedElement.prop('disabled', true);
+
+    $.ajax({
+        url: `/posts/${postID}/like`,
+        method: "POST"
+    }).done(function () {
+        const countLike = clickedElement.next('span');
+        const qtyLike = parseInt(countLike.text());
+
+        countLike.text(qtyLike + 1);
+    }).fail(function () {
+        alert("Error on liking!")
+    }).always(function () {
+        clickedElement.prop('disabled', false);
     })
 }

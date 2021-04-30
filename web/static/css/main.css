@@ -103,3 +103,7 @@ div a.link-color {
 div a:hover {
     color: var(--color-text-highlight-lighter)!important;
 }
+
+div i.like-post:hover {
+    cursor: pointer;
+}

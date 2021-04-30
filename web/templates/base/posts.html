@@ -1,6 +1,6 @@
 <!-- Buttons -->
 {{ define "likes" }}
-<span><i class="far fa-thumbs-up"></i> {{.Likes}}</span>
+<i class="far fa-thumbs-up like-post"></i> <span>{{.Likes}}</span>
 {{end}}
 
 {{ define "edit" }}
@@ -27,7 +27,7 @@
 
 
 {{ define "selfPost"}}
-<div class="jumbotron" post-id="{{ .ID }}">
+<div class="jumbotron" data-post-id="{{ .ID }}">
     {{ template "postHeader" .}}
     <p class="icon-right">
         {{.AuthorUsername}} on {{.CreatedOn.Format "January 2, 2006 at 15h04"}} &nbsp;&nbsp;//&nbsp;&nbsp;
@@ -41,7 +41,7 @@
 
 
 {{ define "othersPost"}}
-<div class="jumbotron" post-id="{{ .ID }}">
+<div class="jumbotron" data-post-id="{{ .ID }}">
     {{template "postHeader" .}}
     <p class="icon-right">
         {{.AuthorUsername}} on {{.CreatedOn.Format "January 2, 2006 at 15h04"}} &nbsp;&nbsp;//&nbsp;&nbsp;
