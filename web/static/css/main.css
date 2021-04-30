@@ -28,7 +28,7 @@ header a.logo-color {
     font-weight: 700!important;
 }
 
-header a.link-color {
+header a.header-link-color {
     color:  var(--color-text-highlight-dark)!important;
 }
 
@@ -89,4 +89,17 @@ div.jumbotron {
 
 div h1.display-4 {
     color: var(--color-text-secondary)!important;
+}
+
+div p.icon-right {
+    text-align: right!important;
+}
+
+div a.link-color {
+    color:  var(--color-text-secondary)!important;
+    text-decoration: none;
+}
+
+div a:hover {
+    color: var(--color-text-highlight-lighter)!important;
 }

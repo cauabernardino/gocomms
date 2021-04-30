@@ -1,15 +1,19 @@
 <!-- Buttons -->
 {{ define "likes" }}
-<span>{{.Likes}} likes</span>
+<span><i class="far fa-thumbs-up"></i> {{.Likes}}</span>
 {{end}}
 
 {{ define "edit" }}
-<a href="/edit">Edit</a>
+<a href="/edit" class="link-color">
+    <i class="far fa-edit"></i> Edit
+</a>
 {{ end }}
 
 
 {{ define "delete" }}
-<a href="/delete">Delete</a>
+<a href="/delete" class="link-color">
+    <i class="fas fa-trash-alt"></i> Delete
+</a>
 {{ end }}
 
 
@@ -19,23 +23,29 @@
 <h1 class="display-4">{{.Title}}</h1>
 <p class="lead">{{.Content}}</p>
 <hr class="my-4">
-<p>{{.AuthorUsername}} on {{.CreatedOn.Format "January 2, 2006 at 15h04"}}</p>
 {{ end}}
 
 
 {{ define "selfPost"}}
-<div class="jumbotron" post-id="{{ .AuthorID }}">
+<div class="jumbotron" post-id="{{ .ID }}">
     {{ template "postHeader" .}}
-    {{ template "likes" . }}
-    {{ template "edit" . }}
-    {{ template "delete" . }}
+    <p class="icon-right">
+        {{.AuthorUsername}} on {{.CreatedOn.Format "January 2, 2006 at 15h04"}} &nbsp;&nbsp;//&nbsp;&nbsp;
+        {{ template "likes" . }}&nbsp;&nbsp;
+        {{ template "edit" . }}&nbsp;&nbsp;
+        {{ template "delete" . }}&nbsp;&nbsp;
+    </p>
+
 </div>
 {{ end }}
 
 
 {{ define "othersPost"}}
-<div class="jumbotron" post-id="{{ .AuthorID }}">
+<div class="jumbotron" post-id="{{ .ID }}">
     {{template "postHeader" .}}
-    {{ template "likes" . }}
+    <p class="icon-right">
+        {{.AuthorUsername}} on {{.CreatedOn.Format "January 2, 2006 at 15h04"}} &nbsp;&nbsp;//&nbsp;&nbsp;
+        {{ template "likes" . }}
+    </p>
 </div>
 {{ end }}
