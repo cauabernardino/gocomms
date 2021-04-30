@@ -13,6 +13,11 @@ function login(event) {
     }).done(function () {
         window.location = "/home";
     }).fail(function () {
-        alert("Invalid email or password!");
+        Swal.fire({
+            title: "Oops...",
+            text: "Invalid email or password!",
+            icon: "error",
+            confirmButtonColor: "#4e4e50",
+        })
     });
 }

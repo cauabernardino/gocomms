@@ -18,8 +18,13 @@ function createPost(event) {
     }).done(function () {
         window.location = "/home";
     }).fail(function () {
-        alert("Error on creating the post!");
-    })
+        Swal.fire({
+            title: "Oops...",
+            text: "Error on creating the post!",
+            icon: "error",
+            confirmButtonColor: "#4e4e50",
+        });
+    });
 }
 
 function likePost(event) {
@@ -45,7 +50,12 @@ function likePost(event) {
         clickedElement.removeClass('like-post');
 
     }).fail(function () {
-        alert("Error on liking!")
+        Swal.fire({
+            title: "Oops...",
+            text: "Error on the post!",
+            icon: "error",
+            confirmButtonColor: "#4e4e50",
+        });
     }).always(function () {
         clickedElement.prop('disabled', false);
     })
@@ -74,7 +84,12 @@ function unlikePost(event) {
         clickedElement.addClass('like-post');
 
     }).fail(function () {
-        alert("Error on liking!")
+        Swal.fire({
+            title: "Oops...",
+            text: "Error on unliking the post!",
+            icon: "error",
+            confirmButtonColor: "#4e4e50",
+        })
     }).always(function () {
         clickedElement.prop('disabled', false);
     })
@@ -93,10 +108,21 @@ function editPost(event) {
             content: $('#content').val(),
         }
     }).done(function () {
-        alert("Post edited successfully!");
-        window.location = "/home";
+        Swal.fire({
+            title: "Success!",
+            text: "Post edited successfully!",
+            icon: "success",
+            confirmButtonColor: "#4e4e50",
+        }).then(function () {
+            window.location = "/home"
+        });
     }).fail(function () {
-        alert("Error on editing post!");
+        Swal.fire({
+            title: "Oops...",
+            text: "Error on editing the post!",
+            icon: "error",
+            confirmButtonColor: "#4e4e50",
+        })
     }).always(function () {
         $("#send-edit").prop('disabled', false)
     })
@@ -106,20 +132,38 @@ function editPost(event) {
 function deletePost(event) {
     event.preventDefault();
 
-    const clickedElement = $(event.target);
-    const post = clickedElement.closest('div')
-    const postID = post.data('post-id');
+    Swal.fire({
+        title: "Are you sure?",
+        text: "After deleting, you won't be able to see this message again.",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonColor: '#950740',
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#4e4e50",
+    }).then(function (confirmation) {
+        if (!confirmation.value) return;
 
-    clickedElement.prop('disabled', true);
+        const clickedElement = $(event.target);
+        const post = clickedElement.closest('div')
+        const postID = post.data('post-id');
 
-    $.ajax({
-        url: `/posts/${postID}`,
-        method: "DELETE"
-    }).done(function () {
-        post.fadeOut("slow", function () {
-            $(this).remove();
+        clickedElement.prop('disabled', true);
+
+        $.ajax({
+            url: `/posts/${postID}`,
+            method: "DELETE"
+        }).done(function () {
+            post.fadeOut("slow", function () {
+                $(this).remove();
+            });
+        }).fail(function () {
+            Swal.fire({
+                title: "Oops...",
+                text: "Error on deleting post!",
+                icon: "error",
+                confirmButtonColor: "#4e4e50",
+            });
         });
-    }).fail(function () {
-        alert("Error on deleting post!");
     })
+
 }
