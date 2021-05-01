@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoComms - {{ .User.Name }}</title>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<header>
+    {{ template "navbar" }}
+</header>
+
+{{ $followedByLoggedUser := false }}
+{{ range .User.Followers }}
+{{ if (eq .ID $.LoggedUserID) }}
+{{ $followedByLoggedUser = true }}
+{{ end }}
+{{ end }}
+
+<body>
+    <div class="container-fluid">
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ .User.Name }}'s Profile</h4>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            {{ .User.Username }} - Member Since: {{
+                            .User.CreatedOn.Format
+                            "January 2, 2006"}}
+                        </h6>
+                        <p class="card-text">
+                            <a class="link-color-users" href="#">
+                                Followers: {{ len .User.Followers }}
+                            </a>
+                        </p>
+                        <p class="card-text">
+                            <a class="link-color-users" href="#">
+                                Following: {{ len .User.Following }}
+                            </a>
+                        </p>
+
+                        <a href="#" class="card-link">
+                            {{ if $followedByLoggedUser }}
+                            <button id="unfollow" class="btn btn-profile" data-user-id="{{.User.ID}}">
+                                Unfollow
+                            </button>
+                            {{ else }}
+                            <button id="follow" class="btn btn-profile" data-user-id="{{.User.ID}}">
+                                Follow
+                            </button>
+                            {{ end }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ .User.Name }}'s Posts</h4>
+                        <p class="card-text">
+                            {{ range .User.Posts }}
+                            {{ template "othersPost" .}}
+                            {{ else }}
+                        <p class="text-muted text-center">
+                            No posts done yet
+                        </p>
+                        {{ end}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ template "scripts" }}
+
+    <script src="/static/js/posts.js"></script>
+</body>
+{{ template "footer" }}
+
+</html>

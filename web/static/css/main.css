@@ -135,3 +135,20 @@ div a.link-color-users {
 div a:hover {
     color: var(--color-text-highlight-lighter)!important;
 }
+
+
+button.btn-profile {
+    color: var(--color-text-primary)!important;
+    background-color: var(--color-text-highlight-dark)!important;
+}
+
+button.btn-profile:hover {
+    cursor: pointer;
+    color: var(--color-text-secondary);
+}
+
+button.btn-profile:focus {
+    border-color: var(--color-text-highlight-lighter)!important;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(172, 94, 111, 0.25)!important;
+}
