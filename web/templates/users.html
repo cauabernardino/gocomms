@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoComms - Home</title>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<header>
+    {{ template "navbar" }}
+</header>
+
+<body>
+    <div class="container-fluid">
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Users found:</h4>
+                        {{ range . }}
+                        <p class="card-text">
+                            <a href="/users/{{ .ID }}" class="link-color-users">{{ .Name }} ({{ .Username }}) -
+                                Member Since: {{
+                                .CreatedOn.Format
+                                "January 2, 2006"}}</a>
+                        </p>
+                        {{ else }}
+                        <p class="card-text">
+                            No user was found!
+                        </p>
+                        {{ end}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ template "scripts" }}
+
+    <script src="/static/js/posts.js"></script>
+</body>
+{{ template "footer" }}
+
+</html>

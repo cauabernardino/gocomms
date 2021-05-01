@@ -121,3 +121,17 @@ div i.delete-post:hover {
     color: var(--color-text-highlight-lighter)!important;
     cursor: pointer;
 }
+
+div.card {
+    color: var(--color-text-secondary)!important;
+    background-color: var(--color-background-light)!important;
+}
+
+div a.link-color-users {
+    color:  var(--color-text-primary)!important;
+    text-decoration: none;
+}
+
+div a:hover {
+    color: var(--color-text-highlight-lighter)!important;
+}
