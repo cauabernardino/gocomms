@@ -6,12 +6,14 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
+	"strconv"
 	"web/src/config"
 	"web/src/models"
 	"web/src/responses"
 	"web/src/utils"
+
+	"github.com/gorilla/mux"
 )
 
 // CreateUser handles the call to API for registering an user in database
@@ -111,19 +113,19 @@ func GetAllUserInformation(userID uint64, r *http.Request) (models.User, error) 
 
 		case followersLoad := <-followersChannel:
 			if followersLoad == nil {
-				log.Print("no followers found")
+				return models.User{}, errors.New("error on getting followers")
 			}
 			followers = followersLoad
 
 		case followingLoad := <-followingChannel:
 			if followingLoad == nil {
-				log.Print("no following users found")
+				return models.User{}, errors.New("error on getting following")
 			}
 			following = followingLoad
 
 		case postsLoad := <-postsChannel:
 			if postsLoad == nil {
-				log.Print("no user posts found")
+				return models.User{}, errors.New("error on getting user posts")
 			}
 			posts = postsLoad
 		}
@@ -181,6 +183,11 @@ func GetFollowersData(channel chan []models.User, userID uint64, r *http.Request
 		return
 	}
 
+	if followers == nil {
+		channel <- make([]models.User, 0)
+		return
+	}
+
 	channel <- followers
 }
 
@@ -202,6 +209,11 @@ func GetFollowingData(channel chan []models.User, userID uint64, r *http.Request
 	var following []models.User
 	if err = json.NewDecoder(response.Body).Decode(&following); err != nil {
 		channel <- nil
+		return
+	}
+
+	if following == nil {
+		channel <- make([]models.User, 0)
 		return
 	}
 
@@ -229,5 +241,88 @@ func GetPostsData(channel chan []models.Post, userID uint64, r *http.Request) {
 		return
 	}
 
+	if posts == nil {
+		channel <- make([]models.Post, 0)
+		return
+	}
+
 	channel <- posts
+}
+
+// CreateUser handles the call to API for unfollowing an user
+func UnfollowUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+
+	userID, err := strconv.ParseUint(params["userID"], 10, 64)
+	if err != nil {
+		responses.ReturnJSON(
+			w,
+			http.StatusBadRequest,
+			responses.APIError{Error: err.Error()},
+		)
+		return
+	}
+
+	url := fmt.Sprintf("%s/users/%d/unfollow", config.APIURL, userID)
+	response, err := UserAuthenticatedRequest(
+		r,
+		http.MethodPost,
+		url,
+		nil,
+	)
+	if err != nil {
+		responses.ReturnJSON(
+			w,
+			http.StatusInternalServerError,
+			responses.APIError{Error: err.Error()},
+		)
+		return
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode >= 400 {
+		responses.HandleAPIStatusCodeError(w, response)
+		return
+	}
+
+	responses.ReturnJSON(w, response.StatusCode, nil)
+}
+
+// FollowUser handles the call to API for following an user
+func FollowUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+
+	userID, err := strconv.ParseUint(params["userID"], 10, 64)
+	if err != nil {
+		responses.ReturnJSON(
+			w,
+			http.StatusBadRequest,
+			responses.APIError{Error: err.Error()},
+		)
+		return
+	}
+
+	url := fmt.Sprintf("%s/users/%d/follow", config.APIURL, userID)
+	response, err := UserAuthenticatedRequest(
+		r,
+		http.MethodPost,
+		url,
+		nil,
+	)
+	if err != nil {
+		responses.ReturnJSON(
+			w,
+			http.StatusInternalServerError,
+			responses.APIError{Error: err.Error()},
+		)
+		return
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode >= 400 {
+		responses.HandleAPIStatusCodeError(w, response)
+		return
+	}
+
+	responses.ReturnJSON(w, response.StatusCode, nil)
 }
