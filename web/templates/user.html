@@ -37,12 +37,12 @@
                             "January 2, 2006"}}
                         </h6>
                         <p class="card-text">
-                            <a class="link-color-users" href="#">
+                            <a class="link-color-users" href="#" data-toggle="modal" data-target="#modal-followers">
                                 Followers: {{ len .User.Followers }}
                             </a>
                         </p>
                         <p class="card-text">
-                            <a class="link-color-users" href="#">
+                            <a class="link-color-users" href="#" data-toggle="modal" data-target="#modal-following">
                                 Following: {{ len .User.Following }}
                             </a>
                         </p>
@@ -68,10 +68,11 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">{{ .User.Name }}'s Posts</h4>
+                        {{ range .User.Posts }}
                         <p class="card-text">
-                            {{ range .User.Posts }}
                             {{ template "othersPost" .}}
-                            {{ else }}
+                        </p>
+                        {{ else }}
                         <p class="text-muted text-center">
                             No posts done yet
                         </p>
@@ -83,6 +84,8 @@
         </div>
     </div>
 
+    {{ template "modal-followers" .User }}
+    {{ template "modal-following" .User }}
     {{ template "scripts" }}
 
     <script src="/static/js/posts.js"></script>

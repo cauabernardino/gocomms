@@ -37,7 +37,7 @@ div h3.title-hg-light {
 }
 
 form label.title-hg-dark {
-    color: var(--color-text-highlight-dark);
+    color: var(--color-text-highlight-dark)!important;
 }
 
 form input.input-color {
@@ -67,8 +67,8 @@ form textarea.input-color:focus {
 }
 
 form button.btn-color {
-    color: var(--color-text-secondary)!important;
-    background-color: var(--color-background-light)!important;
+    color: var(--color-text-primary)!important;
+    background-color: var(--color-text-highlight-dark)!important;
 }
 
 form button.btn-color:hover {
@@ -151,4 +151,13 @@ button.btn-profile:focus {
     border-color: var(--color-text-highlight-lighter)!important;
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(172, 94, 111, 0.25)!important;
+}
+
+div.modal-content {
+    background-color: var(--color-background-light)!important;
+    color: var(--color-text-secondary)!important;
+}
+
+div.modal-header {
+    border-color: var(--color-background)!important;
 }
