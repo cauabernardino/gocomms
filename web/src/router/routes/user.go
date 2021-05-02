@@ -61,4 +61,16 @@ var userRoutes = []Route{
 		Function:     controllers.EditProfile,
 		AuthRequired: true,
 	},
+	{
+		URI:          "/change-password",
+		Method:       http.MethodGet,
+		Function:     views.ChangePasswordPage,
+		AuthRequired: true,
+	},
+	{
+		URI:          "/change-password",
+		Method:       http.MethodPost,
+		Function:     controllers.ChangePassword,
+		AuthRequired: true,
+	},
 }

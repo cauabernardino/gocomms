@@ -1,6 +1,8 @@
 $('#unfollow').on('click', unfollow);
 $('#follow').on('click', follow);
 $('#edit-profile').on('submit', editProfile);
+$('#change-password').on('submit', changePassword)
+
 
 function unfollow() {
     const userID = $(this).data('user-id');
@@ -68,6 +70,46 @@ function editProfile(event) {
         Swal.fire({
             title: "Oops...",
             text: "Error editing profile!",
+            icon: "error",
+            confirmButtonColor: "#4e4e50",
+        });
+    })
+}
+
+
+function changePassword(event) {
+    event.preventDefault();
+
+    if ($('#new-password').val() != $('#confirm-password').val()) {
+        Swal.fire({
+            title: "Oops...",
+            text: "The passwords don't match!",
+            icon: "error",
+            confirmButtonColor: "#4e4e50",
+        });
+        return;
+    }
+
+    $.ajax({
+        url: "/change-password",
+        method: "POST",
+        data: {
+            current: $('#current-password').val(),
+            new: $('#new-password').val(),
+        }
+    }).done(function () {
+        Swal.fire({
+            title: "Success!",
+            text: "Password was successfully changed!",
+            icon: "success",
+            confirmButtonColor: "#4e4e50",
+        }).then(function () {
+            window.location = "/profile"
+        });
+    }).fail(function () {
+        Swal.fire({
+            title: "Oops...",
+            text: "Error on changing password!",
             icon: "error",
             confirmButtonColor: "#4e4e50",
         });

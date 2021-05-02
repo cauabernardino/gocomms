@@ -135,3 +135,8 @@ func EditProfilePage(w http.ResponseWriter, r *http.Request) {
 
 	RenderTemplate(w, "edit-profile.html", user)
 }
+
+//ChangePasswordPage handles the loading of the page for changing password
+func ChangePasswordPage(w http.ResponseWriter, r *http.Request) {
+	RenderTemplate(w, "change-password.html", nil)
+}
