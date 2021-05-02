@@ -28,7 +28,9 @@
 <div class="jumbotron" data-post-id="{{ .ID }}">
     {{ template "postHeader" .}}
     <p class="icon-right">
-        {{.AuthorUsername}} on {{.CreatedOn.Format "January 2, 2006 at 15h04"}} &nbsp;&nbsp;//&nbsp;&nbsp;
+        <a href="/users/{{.AuthorID}}" class="link-color-users">
+            {{.AuthorUsername}}
+        </a> on {{.CreatedOn.Format "January 2, 2006 at 15h04"}} &nbsp;&nbsp;//&nbsp;&nbsp;
         {{ template "likes" . }}&nbsp;&nbsp;
         {{ template "edit" . }}&nbsp;&nbsp;
         {{ template "delete" . }}&nbsp;&nbsp;
@@ -42,7 +44,9 @@
 <div class="jumbotron" data-post-id="{{ .ID }}">
     {{template "postHeader" .}}
     <p class="icon-right">
-        {{.AuthorUsername}} on {{.CreatedOn.Format "January 2, 2006 at 15h04"}} &nbsp;&nbsp;//&nbsp;&nbsp;
+        <a href="/users/{{.AuthorID}}" class="link-color-users">
+            {{.AuthorUsername}}
+        </a> on {{.CreatedOn.Format "January 2, 2006 at 15h04"}} &nbsp;&nbsp;//&nbsp;&nbsp;
         {{ template "likes" . }}
     </p>
 </div>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoComms - My Profile</title>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<header>
+    {{ template "navbar" }}
+</header>
+
+<body>
+    <div class="container-fluid">
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">My Profile</h4>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            {{ .Username }} - Member Since: {{
+                            .CreatedOn.Format "January 2, 2006"}}
+                        </h6>
+                        <p class="card-text">
+                            <a class="link-color-users" href="#" data-toggle="modal" data-target="#modal-followers">
+                                Followers: {{ len .Followers }}
+                            </a>
+                        </p>
+                        <p class="card-text">
+                            <a class="link-color-users" href="#" data-toggle="modal" data-target="#modal-following">
+                                Following: {{ len .Following }}
+                            </a>
+                        </p>
+                        <div class="row">
+                            <div class="col-12">
+                                <a href="/edit-profile" class="link-color-users">
+                                    <button class="btn btn-profile">
+                                        Edit profile
+                                    </button>
+                                </a>
+                                <a href="/change-password" class="link-color-users">
+                                    <button class="btn btn-profile">
+                                        Change password
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">My Posts</h4>
+                        {{ range .Posts }}
+                        <p class="card-text">
+                            {{ template "selfPost" .}}
+                        </p>
+                        {{ else }}
+                        <p class="text-muted text-center">
+                            No posts done yet
+                        </p>
+                        {{ end}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ template "modal-followers" . }}
+    {{ template "modal-following" . }}
+    {{ template "scripts" }}
+
+    <script src="/static/js/posts.js"></script>
+    <script src="/static/js/user.js"></script>
+</body>
+{{ template "footer" }}
+
+</html>

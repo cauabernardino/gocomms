@@ -54,7 +54,8 @@ func UsersPage(w http.ResponseWriter, r *http.Request) {
 	RenderTemplate(w, "users.html", users)
 }
 
-// ProfilePage handles the loading of an user profile page
+// ProfilePage handles the loading of an user profile page.
+// It differentiates if you are the logged user or not.
 func ProfilePage(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
@@ -68,6 +69,14 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	cookie, _ := utils.CheckCookie(r)
+	loggedUserID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	if userID == loggedUserID {
+		http.Redirect(w, r, "/profile", http.StatusFound)
+		return
+	}
+
 	user, err := controllers.GetAllUserInformation(userID, r)
 	if err != nil {
 		responses.ReturnJSON(
@@ -78,9 +87,6 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cookie, _ := utils.CheckCookie(r)
-	loggedUserID, _ := strconv.ParseUint(cookie["id"], 10, 64)
-
 	RenderTemplate(w, "user.html", struct {
 		User         models.User
 		LoggedUserID uint64
@@ -88,4 +94,21 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 		User:         user,
 		LoggedUserID: loggedUserID,
 	})
+}
+
+// LoggedUserProfilePage handles the loading of logged userprofile page.
+func LoggedUserProfilePage(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := utils.CheckCookie(r)
+	loggedUserID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	user, err := controllers.GetAllUserInformation(loggedUserID, r)
+	if err != nil {
+		responses.ReturnJSON(
+			w,
+			http.StatusInternalServerError,
+			responses.APIError{Error: err.Error()},
+		)
+		return
+	}
+	RenderTemplate(w, "profile.html", user)
 }
