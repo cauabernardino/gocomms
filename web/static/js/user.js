@@ -1,7 +1,8 @@
 $('#unfollow').on('click', unfollow);
 $('#follow').on('click', follow);
 $('#edit-profile').on('submit', editProfile);
-$('#change-password').on('submit', changePassword)
+$('#change-password').on('submit', changePassword);
+$('#delete-user').on('click', deleteUser);
 
 
 function unfollow() {
@@ -113,5 +114,44 @@ function changePassword(event) {
             icon: "error",
             confirmButtonColor: "#4e4e50",
         });
+    });
+}
+
+
+function deleteUser(event) {
+
+    event.preventDefault();
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Deleting your account is an irreversible action.",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonColor: '#950740',
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#4e4e50",
+    }).then(function (confirmation) {
+        if (confirmation.value) {
+            $.ajax({
+                url: "/delete-user",
+                method: "DELETE",
+            }).done(function () {
+                Swal.fire({
+                    title: "Done",
+                    text: "Your account was deleted.",
+                    icon: "success",
+                    confirmButtonColor: "#4e4e50",
+                }).then(function () {
+                    window.location = "/logout";
+                })
+            }).fail(function () {
+                Swal.fire({
+                    title: "Oops...",
+                    text: "Something went wrong while deleting your account",
+                    icon: "error",
+                    confirmButtonColor: "#4e4e50",
+                });
+            })
+        }
     })
 }

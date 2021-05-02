@@ -417,3 +417,34 @@ func ChangePassword(w http.ResponseWriter, r *http.Request) {
 
 	responses.ReturnJSON(w, response.StatusCode, nil)
 }
+
+// DeleteUser handles the call to API to delete an user account
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := utils.CheckCookie(r)
+	userID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	url := fmt.Sprintf("%s/users/%d", config.APIURL, userID)
+	response, err := UserAuthenticatedRequest(
+		r,
+		http.MethodDelete,
+		url,
+		nil,
+	)
+	if err != nil {
+		responses.ReturnJSON(
+			w,
+			http.StatusInternalServerError,
+			responses.APIError{Error: err.Error()},
+		)
+		return
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode >= 400 {
+		responses.HandleAPIStatusCodeError(w, response)
+		return
+	}
+
+	responses.ReturnJSON(w, response.StatusCode, nil)
+
+}
