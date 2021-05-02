@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoComms - My Profile</title>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<header>
+    {{ template "navbar" }}
+</header>
+
+<body>
+    <div class="container-fluid">
+        <div class="row mt-4">
+            <div class="col-12">
+                <h3 class="title-hg-light">Edit Profile</h3>
+                <form id="edit-profile">
+                    <div class="form-group">
+                        <label class="title-hg-dark" for="name">Name</label>
+                        <input type="text" class="form-control input-color" id="name" name="name" value="{{.Name}}"
+                            placeholder="Edit name">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="title-hg-dark" for="email">Email</label>
+                        <input type="text" class="form-control input-color" id="email" name="email" value="{{.Email}}"
+                            placeholder="Edit email">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="title-hg-dark" for="username">Username</label>
+                        <input type="text" class="form-control input-color" id="username" name="username"
+                            value="{{.Username}}" placeholder="Edit username">
+                    </div>
+
+                    <button class="btn btn-color" data-post-id="{{.ID}}">Save edit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    {{ template "scripts" }}
+
+    <script src="/static/js/posts.js"></script>
+    <script src="/static/js/user.js"></script>
+</body>
+{{ template "footer" }}
+
+</html>

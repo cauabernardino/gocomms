@@ -96,7 +96,7 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// LoggedUserProfilePage handles the loading of logged userprofile page.
+// LoggedUserProfilePage handles the loading of logged user profile page.
 func LoggedUserProfilePage(w http.ResponseWriter, r *http.Request) {
 	cookie, _ := utils.CheckCookie(r)
 	loggedUserID, _ := strconv.ParseUint(cookie["id"], 10, 64)
@@ -111,4 +111,27 @@ func LoggedUserProfilePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	RenderTemplate(w, "profile.html", user)
+}
+
+// EditProfilePage handles the loading of page for users edit their profiles.
+func EditProfilePage(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := utils.CheckCookie(r)
+	loggedUserID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	channel := make(chan models.User)
+
+	// Using like this for not creating another function without chan to do the same job
+	go controllers.GetUserData(channel, loggedUserID, r)
+	user := <-channel
+
+	if user.ID == 0 {
+		responses.ReturnJSON(
+			w,
+			http.StatusInternalServerError,
+			responses.APIError{Error: "error on retrieving user data"},
+		)
+		return
+	}
+
+	RenderTemplate(w, "edit-profile.html", user)
 }
