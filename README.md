@@ -1,7 +1,5 @@
 # GoComms 
 
-ON DEVELOPMENT.
-
 An application that resembles a textual social network, made in Go. 
 
 The idea is that the application has few dependencies, to create as much as possible of web application functionalities from scratch, to learn more about the Go language and web development.
@@ -19,22 +17,23 @@ The list of external packages used are:
 - [jwt-go](https://github.com/dgrijalva/jwt-go) for creating and validating JSON Web Tokens
 - [GoDotEnv](https://github.com/joho/godotenv) for loading environment variables
 - [Go Cryptography](https://golang.org/x/crypto) for encrypting passwords
-
+- [SecureCookie](https://github.com/gorilla/securecookie) for handling cookies
 
 ## How to run ⚙️
 
-- Database
+- Clone the repo
+```bash
+git clone https://github.com/cauabernardino/gocomms.git
+```
+
+### Database
 
 The API is configured to use MySQL database listening in the default port 3306. You can install it directly accessing [here](https://dev.mysql.com/downloads/mysql/), or use it from a Docker image if you prefer, looking [here](https://hub.docker.com/_/mysql).
 
 The query for creating the database can be found in [database](/api/database).
 
-- API
 
-Clone the repo
-```bash
-git clone https://github.com/cauabernardino/gocomms.git
-```
+### API
 
 - Enter the API folder
 ```bash
@@ -100,4 +99,4 @@ go build -o web
 ./web
 ```
 
-The API standard port is `8080`.
+The web app standard port is `8080`.
